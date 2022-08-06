@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+import Header from "./containers/Header";
 // import ProductCart from "./components/ProductCard";
 // import ColorBox from "./components/ColorBox";
 // import DecrementBtn from "./components/DecrementBtn";
@@ -7,20 +7,20 @@ import Header from "./components/Header";
 // import CommonBtn from "./components/CommonBtn";
 // import SwipeArrowBtn from "./components/SwipeArrowBtn";
 // import AddToCartBtn from "./components/AddToCartBtn";
-// import Cart from "./pages/Cart";
+import Cart from "./pages/Cart";
 import Category from "./pages/Category";
 import Product from "./pages/Product";
 import CartOverlay from "./components/CartOverlay";
 import { useQuery, gql } from '@apollo/client';
-import {setCurrencies} from './reducers/currencySlice';
-import { setCategories} from './reducers/categorySlice';
+import { setCurrencies } from './reducers/currencySlice';
+import { setCategories } from './reducers/categorySlice';
 import { useDispatch } from 'react-redux';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
-  Link
+  Link,
 } from "react-router-dom";
 
 
@@ -36,7 +36,6 @@ function App() {
   if(loading) return (<div>Loading...</div>)
   return (
     <div className="App">
-      <Header />
       {/* <ProductCart />
       <ColorBox color="#D3D2D5" />
       <ProductText title="Running Short" brand="Apollo"/>
@@ -46,24 +45,18 @@ function App() {
       <CommonBtn text="Add to Cart"/>
       <SwipeArrowBtn />
       <AddToCartBtn /> */}
-      {/* <Category />
-      <Product />
+      {/* <Product />
       <Cart />
       <CartOverlay /> */}
-      <Switch>
-          <Route path="/">
-            <About />
-          </Route>
-          <Route path="/product/:id">
-            <Product />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
-      </Switch>
+     <Router>
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<Category />} />
+          <Route path="/category/:name" element={<Category />} />
+          <Route path="/product/:id" element={<Product />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+    </Router>
     </div>
   );
 }

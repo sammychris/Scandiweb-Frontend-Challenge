@@ -1,9 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from '../images/logo.svg';
 import closeIcon from '../images/close-icon.svg';
 import cartIcon from '../images/cart-icon.svg';
-import { useSelector } from 'react-redux'
+import CartOverlay from '../components/CartOverlay';
+import { useQuery, gql } from '@apollo/client';
+import Logo from '../components/Logo';
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+  } from "react-router-dom";
 
 const Container = styled.header`
     height: 80px;
@@ -13,7 +20,15 @@ const Container = styled.header`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 `;
+
+const Overlay = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100vh; 
+    background: rgb(0 0 0 / 42%); 
+`
 
 const Navigation = styled.div`
     display: flex;
@@ -24,15 +39,11 @@ const Navigation = styled.div`
     justify-content: space-around;
 `;
 
-const NavLink = styled.a`
+const NavLink = styled(Link)`
     font-size: 16px;
     color: #1D1F22;
     text-decoration: none;
-`;
-
-const Image = styled.img`
-    Width: 31.18px;
-    Height: 28.62px;
+    text-transform: uppercase;
 `;
 
 const Actions = styled.div`
@@ -77,20 +88,17 @@ const ItemNumber = styled.span`
 `;
 
 function Header () {
-    const {categories} = useSelector((state) => state.categories);
-    const {currencies} = useSelector((state) => state.currencies);
-    console.log(categories)
+    const { loading, error, data } = useQuery(QUERY);
+    const { categories } = data;
     return(
+        <>
         <Container>
             <Navigation>
-                {/* <NavLink href="#">WOMEN</NavLink>
-                <NavLink href="#">MEN</NavLink>
-                <NavLink href="#">KIDS</NavLink> */}
                 {
-                    categories?.map(el => <NavLink  href={`/${el.name}`}>{el.name.toUpperCase()}</NavLink>)
+                    categories?.map(el => <NavLink to={`/category/${el.name}`}>{el.name}</NavLink>)
                 }
             </Navigation>
-            <Image src={logo} /> 
+            <Logo />
             <Actions>
                 <Currency href='#'>
                     $<SelectCurrency src={closeIcon} />
@@ -98,8 +106,21 @@ function Header () {
                 <CartIcon href='#' />
                 <ItemNumber>4</ItemNumber> 
             </Actions>
+            {/* <CartOverlay /> */}
         </Container>
+        {/* <Overlay /> */}
+        </>
     );
 }
 
 export default Header;
+
+
+const QUERY = gql`
+{
+	categories {
+        name
+    }
+
+}`;
+

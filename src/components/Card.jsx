@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Image from './Image';
 import productImage from '../images/product-image.jpg';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
     padding: 16px;
@@ -12,7 +13,7 @@ const Container = styled.div`
     }
 `;
 
-const ProductUrl = styled.a`
+const ProductUrl = styled(Link)`
     text-decoration: none;
 `;
 
@@ -31,17 +32,17 @@ const PriceTag = styled.span`
     padding: 10px 0;
 `;
 
-function ProductCart ({photo, name, price}) {
+function Card ({id, photo, name, price}) {
     return (
         <Container>
-            <ProductUrl href='#'>
-                <Image photo={productImage} width='354px' height='330px'/>
-                <Title>Apollo Running Short</Title>
+            <ProductUrl to={'/product/'+id}>
+                <Image photo={photo} />
+                <Title>{name}</Title>
                 <PriceTag>$50.00</PriceTag>
             </ProductUrl>
         </Container>
     )
 }
 
-export default ProductCart;
+export default Card;
 

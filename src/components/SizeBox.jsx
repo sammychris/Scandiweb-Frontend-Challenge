@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-function SizeBox({size, style, active}) {
+function SizeBox({value, style, active}) {
     const Button = styled.a`
         display: flex;
         align-items: center;
@@ -13,7 +13,7 @@ function SizeBox({size, style, active}) {
         margin-right: 12px;
     `;
     return(
-        <Button href="#" style={style}>{size}</Button>
+        <Button href="#" style={style}>{value}</Button>
     );
 }
 
