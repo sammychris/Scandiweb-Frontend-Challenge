@@ -1,10 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import categorySlice from "./reducers/categorySlice";
-import currencySlice from "./reducers/currencySlice";
+import reducers from "./reducers";
 
 export default configureStore({
     reducer: {
-        categories: categorySlice,
-        currencies: currencySlice,
+        prodState: reducers,
     },
-  });
+});
