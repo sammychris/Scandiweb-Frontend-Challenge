@@ -1,18 +1,76 @@
 import React from 'react';
 import styled from 'styled-components';
-import closeIcon from '../images/close-icon.svg';
-import cartIcon from '../images/cart-icon.svg';
-import CartOverlay from '../components/CartOverlay';
-import { useQuery, gql } from '@apollo/client';
+import closeIcon from '../assets/close-icon.svg';
+import cartIcon from '../assets/cart-icon.svg';
+import CartOverlay from './CartOverlay';
+import CurrencySwitcher from '../components/CurrencySwitcher';
 import Logo from '../components/Logo';
-import {
-    BrowserRouter as Router,
-    Routes,
-    Route,
-    Link,
-  } from "react-router-dom";
+import { Link } from "react-router-dom";
+import withHeader from '../hoc/withHeader';
 
-const Container = styled.header`
+class Header extends React.Component {
+    render(){
+        const {
+            cart,
+            loading,
+            data,
+            currency,
+            onChangeCurrency,
+            currencyIconRef,
+            cartIconRef,
+            showCartRef,
+            showCurrencyRef,
+            showCurrency,
+            showCart,
+            onViewCart,
+        } = this.props;
+
+        if(loading) return '';
+        return(
+            <>
+                <Container>
+                    <HeaderSection>
+                        <Navigation>
+                            {
+                                data?.categories?.map((el, i) => <NavLink to={`/category/${el.name}`} key={i}>{el.name}</NavLink>)
+                            }
+                        </Navigation>
+                        <Logo />
+                        <Actions>
+                            <Currency ref={currencyIconRef} href='#'>
+                                {currency.symbol}<SelectCurrency src={closeIcon} />
+                            </Currency>
+                            <CartIcon href='#' ref={cartIconRef}>
+                                <ItemNumber>{
+                                    cart.length? cart?.map(el => el.quantity)?.reduce((a,b) => a+b): 0
+                                }</ItemNumber>
+                            </CartIcon>
+                        </Actions>
+                        {showCart && <CartOverlay showCartRef={showCartRef} onViewCart={onViewCart}/>}
+                        {showCurrency && <CurrencySwitcher
+                            currencies={data?.currencies}
+                            currency={currency}
+                            onClick={onChangeCurrency}
+                            showCurrencyRef={showCurrencyRef}
+                        />}
+                    </HeaderSection>
+                </Container>
+                {showCart && <Overlay/>}
+            </>
+        );
+    }
+}
+
+export default withHeader(Header);
+
+
+const Container = styled.div`
+    position: relative;
+    z-index: 2;
+    background: #fff;
+`;
+
+const HeaderSection = styled.header`
     height: 80px;
     max-width: 1230px;
     width: 90%;
@@ -24,10 +82,13 @@ const Container = styled.header`
 `;
 
 const Overlay = styled.div`
-    position: absolute;
+    position: fixed;
     width: 100%;
-    height: 100vh; 
+    height: 100%;
+    top: 0;
+    left: 0;
     background: rgb(0 0 0 / 42%); 
+    z-index: 1;
 `
 
 const Navigation = styled.div`
@@ -86,41 +147,4 @@ const ItemNumber = styled.span`
     top: -10px;
     right: -10px;
 `;
-
-function Header () {
-    const { loading, error, data } = useQuery(QUERY);
-    const { categories } = data;
-    return(
-        <>
-        <Container>
-            <Navigation>
-                {
-                    categories?.map(el => <NavLink to={`/category/${el.name}`}>{el.name}</NavLink>)
-                }
-            </Navigation>
-            <Logo />
-            <Actions>
-                <Currency href='#'>
-                    $<SelectCurrency src={closeIcon} />
-                </Currency>
-                <CartIcon href='#' />
-                <ItemNumber>4</ItemNumber> 
-            </Actions>
-            {/* <CartOverlay /> */}
-        </Container>
-        {/* <Overlay /> */}
-        </>
-    );
-}
-
-export default Header;
-
-
-const QUERY = gql`
-{
-	categories {
-        name
-    }
-
-}`;
 
