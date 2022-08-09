@@ -2,26 +2,128 @@ import React from 'react';
 import styled from 'styled-components';
 import H1Text from '../components/H1Text';
 import Layout from '../components/Layout';
-import Image from '../components/Image';
-import productImage from '../images/product-image.jpg';
-import nextImage from '../images/next-btn.svg';
-import prevImage from '../images/prev-btn.svg';
-import ProductSizes from '../components/ProductSizes';
-import ProductColors from '../components/ProductColors';
 import H2Text from '../components/H2Text';
 import H3Text from '../components/H3Text';
-import CommonBtn from '../components/CommonBtn';
-import Paragraph from '../components/Paragraph';
-import SwipeArrowBtn from '../components/SwipeArrowBtn';
-import IncrementBtn from '../components/IncrementBtn';
-import DecrementBtn from '../components/DecrementBtn';
+import H4Text from '../components/H4Text';
+import CommonButton from '../components/CommonButton';
+import SizeBox from '../components/SizeBox';
+import ColorBox from '../components/ColorBox';
+import withCart from '../hoc/withCart';
+import minusIcon from '../assets/minus-square.svg';
+import plusIcon from '../assets/plus-square.svg';
+import nextImg from '../assets/next-btn.svg';
+import prevImg from '../assets/prev-btn.svg';
+import CounterButton from '../components/CounterButton';
+
+
+class Cart extends React.Component {
+    render () {
+        const {
+            cart,
+            onSelect,
+            onIncrement,
+            onDecrement,
+            quantity,
+            totalAmount,
+            percentage,
+            currency,
+            onNext,
+            onPrev,
+            viewImageByIndex
+        } = this.props;
+        return (
+            <Layout>
+                <H1Text>CART</H1Text>
+                <CartContainer>
+                    { cart.length?
+                        (<>
+                            <HrLine/>
+                            {
+                                cart.map((product, i) => {
+                                    const price = product.prices.find(el => el.currency.label === currency.label);
+                                    return (
+                                        <>
+                                            <Product>
+                                                <Details>
+                                                    <H2Text>{product.brand}</H2Text>
+                                                    <H2Text style={{fontWeight: 400}}>{product.name}</H2Text>
+                                                    <H3Text>{price.currency.symbol + (product.quantity * price.amount).toFixed(2)}</H3Text>
+                                                    {
+                                                        product.attributes?.map((attr, i) => (
+                                                            <div id={attr.id} key={i}>
+                                                                <H4Text>{attr.name}: </H4Text>
+                                                                <Boxes>
+                                                                    {
+                                                                        attr.type === 'swatch'?
+                                                                        attr.items.map((item, i) => (
+                                                                            <ColorBox
+                                                                                selected={item.selected}
+                                                                                value={item.value}
+                                                                                id={item.id}
+                                                                                key={i}
+                                                                                onClick={e => onSelect({e, product, attr, item})}
+                                                                            />
+                                                                        )):
+                                                                        attr.items.map((item, i) => (
+                                                                            <SizeBox
+                                                                                selected={item.selected}
+                                                                                value={item.value} 
+                                                                                id={item.id}
+                                                                                key={i}
+                                                                                onClick={e => onSelect({e, product, attr, item})}
+                                                                            />
+                                                                        ))
+                                                                    }  
+                                                                </Boxes> 
+                                                            </div>
+                                                            )
+                                                        )
+                                                    }
+                                                </Details>
+                                                <Functionality>
+                                                    <Counter>
+                                                        <CounterButton icon={plusIcon} onClick={(e) => onIncrement(e, product)} />
+                                                        <H3Text>{product.quantity}</H3Text>
+                                                        <CounterButton icon={minusIcon} onClick={(e) => onDecrement(e, product)} />
+                                                    </Counter>
+                                                    <CartImages src={product?.gallery[viewImageByIndex % product?.gallery.length]}>
+                                                        <SwipeContainer>
+                                                            <PrevBtn href="#" onClick={onPrev} />
+                                                            <NextBtn href="#" onClick={onNext} />
+                                                        </SwipeContainer>
+                                                    </CartImages>
+                                                </Functionality>
+                                            </Product>
+                                            <HrLine/>
+                                        </>
+                                    )
+                                })
+                            }
+                            <InLine>
+                                <H3Text style={{fontWeight: 400, marginRight: 6}}>TAX 20%: </H3Text> <H3Text>{currency.symbol + percentage.toFixed(2)}</H3Text>
+                            </InLine>
+                            <InLine>
+                                <H3Text style={{fontWeight: 400, marginRight: 6}}>Quantity: </H3Text> <H3Text>{quantity}</H3Text>
+                            </InLine>
+                            <InLine>
+                                <H3Text style={{fontWeight: 400, marginRight: 44}}>Total: </H3Text> <H3Text>{currency.symbol + totalAmount.toFixed(2)}</H3Text>
+                            </InLine>
+                            <CommonButton>Order</CommonButton>
+                        </>): <div style={{textAlign: 'center'}}>Cart is empty!</div>
+                    }
+                </CartContainer>
+            </Layout>
+        )
+    }
+}
+
+export default withCart(Cart);
 
 
 
 const CartContainer = styled.div`
     margin: 50px 0;
 `;
-
 const Product = styled.div`
     display: flex;
     justify-content: space-between;
@@ -39,13 +141,6 @@ const Counter = styled.div`
     align-items: center;
     margin-right: 24px;
 `;
-const Picture = styled.div`
-    width: 750px;
-    height: 288px;
-    width: 200px;
-    background-image: url(${productImage});
-    position: relative;
-`;
 const InLine = styled.div`
     display: flex;
 `;
@@ -54,68 +149,38 @@ const HrLine = styled.div`
     background: #E5E5E5;
     margin: 24px 0;
 `;
+const Boxes = styled.div`
+    display: flex;
+    width: 290px;
+`;
 
-class Cart extends React.Component {
-    render() {
-      return (
-        <Layout>
-            <H1Text>CART</H1Text>
-            <CartContainer>
-                <HrLine/>
-                <Product>
-                    <Details>
-                        <H2Text>Apollo</H2Text>
-                        <H2Text style={{fontWeight: 400}}>Running Short</H2Text>
-                        <H3Text>$50.00</H3Text>
-                        <ProductSizes sizes={['M', 'S', 'XL']} style={{marginBottom: 10}} />
-                        <ProductColors colors={['#D3D2D5', '#2B2B2B', '#0F6450']} />
-                    </Details>
-                    <Functionality>
-                        <Counter>
-                            <IncrementBtn />
-                            <H3Text>1</H3Text>
-                            <DecrementBtn />
-                        </Counter>
-                        <Picture>
-                            <SwipeArrowBtn />
-                        </Picture>
-                    </Functionality>
-                </Product>
-                <HrLine/>
-                <Product>
-                    <Details>
-                        <H2Text>Jupiter</H2Text>
-                        <H2Text style={{fontWeight: 400}}>Wayfarer</H2Text>
-                        <H3Text>$50.00</H3Text>
-                        <ProductSizes sizes={['M', 'S', 'XL']} style={{marginBottom: 10}} />
-                        <ProductColors colors={['#D3D2D5', '#2B2B2B', '#0F6450']} />
-                    </Details>
-                    <Functionality>
-                        <Counter>
-                            <IncrementBtn />
-                            <H3Text>2</H3Text>
-                            <DecrementBtn />
-                        </Counter>
-                        <Picture>
-                            <SwipeArrowBtn />
-                        </Picture>
-                    </Functionality>
-                </Product>
-                <HrLine/>
-                <InLine>
-                    <H3Text style={{fontWeight: 400, marginRight: 6}}>TAX 20%: </H3Text> <H3Text>$42.00</H3Text>
-                </InLine>
-                <InLine>
-                    <H3Text style={{fontWeight: 400, marginRight: 6}}>Quantity: </H3Text> <H3Text>3</H3Text>
-                </InLine>
-                <InLine>
-                    <H3Text style={{fontWeight: 400, marginRight: 44}}>Total: </H3Text> <H3Text>$200.00</H3Text>
-                </InLine>
-                <CommonBtn>Order</CommonBtn>
-            </CartContainer>
-        </Layout>
-      )
-    }
-}
+const SwipeContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 56px;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+`;
+const NextBtn = styled.a`
+    display: flex;
+    width: 24px;
+    height: 24px;
+    background: url(${nextImg});
+`;
+const PrevBtn = styled.a`
+    display: flex;
+    width: 24px;
+    height: 24px;
+    background: url(${prevImg});
+`;
+const CartImages = styled.div`
+    width: 750px;
+    height: 288px;
+    width: 200px;
+    background-image: url(${props => props.src});
+    position: relative;
+    background-size: contain;
+    background-repeat: no-repeat;
+`;
 
-export default Cart;
