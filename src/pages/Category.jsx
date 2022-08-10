@@ -3,9 +3,38 @@ import styled from 'styled-components';
 import Layout from '../components/Layout';
 import H1Text from '../components/H1Text';
 import Card from '../components/Card';
-import { useQuery, gql } from '@apollo/client';
-import { useParams } from "react-router-dom";
+import withCategory from '../hoc/withCategory';
+import Loader from '../components/Loader';
 
+
+class Category extends React.Component {   
+    render(){
+      const {data, loading, error, currency, addToCart } = this.props;
+      if(loading) return <Loader />
+      return (
+        <Layout>
+            <H1Text>{data?.category?.name}</H1Text>
+            <CategoryContainer>
+                {
+                  data?.category?.products.map((prod, i) => {
+                    return (
+                      <Card
+                        currency={currency}
+                        addToCart={addToCart}
+                        key={i}
+                        product={prod}
+                      />
+                    )
+                  }
+                  )
+                }
+            </CategoryContainer>
+        </Layout>
+      );
+    }
+}
+
+export default withCategory(Category);
 
 const CategoryContainer = styled.div`
     display: flex;
@@ -13,55 +42,3 @@ const CategoryContainer = styled.div`
     width: 100%;
     margin: 50px 0;
 `;
-
-function Category () {
-    let { name } = useParams();
-    const { loading, error, data } = useQuery(QUERY(name));
-    if(loading) return <div>Loading...</div>
-
-    return (
-      <Layout>
-          <H1Text>{data?.category?.name}</H1Text>
-          <CategoryContainer>
-              {
-                data?.category?.products.map(el => <Card photo={el.gallery[0]} name={el.name} id={el.id} />)
-              }
-          </CategoryContainer>
-      </Layout>
-    );
-}
-
-export default Category;
-
-const QUERY = (name) => gql`
-{
-	category (input: { title: "${name || 'all'}" }) {
-    name
-    products {
-      id
-      name
-      inStock
-      gallery
-      description
-      category
-      attributes {
-        id
-        name
-        type
-        items {
-          displayValue
-          value
-          id
-        }
-      }
-      prices {
-        currency {
-          label
-          symbol
-        }
-        amount
-      }
-      brand
-    }
-  }
-}`;
