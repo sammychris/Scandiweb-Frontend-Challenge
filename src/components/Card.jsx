@@ -15,7 +15,7 @@ class Card extends React.Component {
         <ProductUrl to={`/product/${id}`}>
           <ProductImg src={gallery[0]}>
             {!inStock && <Span>OUT OF STOCK</Span>}
-            <AddToCartIcon src={addToCartIcon} />
+            {inStock && <AddToCartIcon src={addToCartIcon} />}
           </ProductImg>
           <Title>{`${brand} ${name}`}</Title>
           <PriceTag>{price.currency.symbol + price.amount.toFixed(2)}</PriceTag>
@@ -28,14 +28,14 @@ class Card extends React.Component {
 
 export default Card;
 
-const AddToCartIcon = styled.image`
+const AddToCartIcon = styled.img`
+  display: none;
   width: 52px;
   height: 52px;
   position: absolute;
   bottom: -20px;
   right: 20px;
 `;
-
 const Container = styled.div`
   padding: 14px;
   height: 444px;
