@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/main.e1136392.css","mappings":"6DAEA,4BAIE,aAAe,CADf,mBAAoB,CAFpB,QAAS,CACT,SAGF","sources":["index.css"],"sourcesContent":["@import url('https://fonts.googleapis.com/css?family=Raleway');\n\nbody, h1, h2, h3, h4, h5, p, ul, li {\n  margin: 0;\n  padding: 0;\n  font-family: Raleway;\n  color:  #1D1F22;\n}\n"],"names":[],"sourceRoot":""}
