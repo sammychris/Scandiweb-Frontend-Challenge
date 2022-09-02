@@ -7,7 +7,7 @@ class CounterButton extends React.Component {
       style, icon, onClick, children,
     } = this.props;
     return (
-      <Box style={style} onClick={onClick} href="#" src={icon}>{children}</Box>
+      <Box style={{...style, backgroundImage: `url(${icon})`}} onClick={onClick} href="#" >{children}</Box>
     );
   }
 }
@@ -18,6 +18,5 @@ const Box = styled.a`
   display: flex;
   width: 45px;
   height: 45px;
-  background: url(${(props) => props.src});
   background-size: cover;
 `;

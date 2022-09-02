@@ -28,7 +28,7 @@ class CartItem extends React.Component {
         <Details>
           <H2Text>{product.brand}</H2Text>
           <H2Text style={{ fontWeight: 400 }}>{product.name}</H2Text>
-          <H3Text>{price.currency.symbol + (product.quantity * price.amount).toFixed(2)}</H3Text>
+          <H3Text>{price.currency.symbol + price.amount.toFixed(2)}</H3Text>
           {
             product.attributes?.map((attr, i) => (
               <div id={attr.id} key={i}>

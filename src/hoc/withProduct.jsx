@@ -20,19 +20,32 @@ function withProduct(Component) {
       if (!isAttributes()) {
         window.alert('You must select at least one attribute of each product attributes');
       }
-      else if (productIndex === -1) {
-        dispatch(setCart([...cart, { ...product, quantity: 1 }]));
+      else if (isNewProduct(productIndex)) {
+        addNewProduct();
         window.alert('You\'ve successfully added a new product to Cart!');
-      } else {
-        const newCart = JSON.parse(JSON.stringify(cart));
-        newCart[productIndex].quantity++;
-        dispatch(setCart(newCart));
+      }
+      else {
+        addProductQuantity(productIndex);
         window.alert('You\'ve successfully added another quantity of this product in Cart!');
       }
     };
 
-    const isAttributes = () => {
+    const isAttributes = () => { // check if any attribute is seleted
       return product.attributes.every((items) => JSON.stringify(items).includes('"selected":true'));
+    }
+
+    const isNewProduct = (productIndex) => { // check if product doesn't exists!
+      return productIndex === -1;
+    }
+
+    const addNewProduct = () => { // add a new product!
+      dispatch(setCart([...cart, { ...product, quantity: 1 }]));
+    }
+
+    const addProductQuantity = (findByIndex) => { // increases product quantity...
+      const newCart = JSON.parse(JSON.stringify(cart));
+      newCart[findByIndex].quantity++;
+      dispatch(setCart(newCart));
     }
 
     const onSelect = ({ e, attr, item }) => {

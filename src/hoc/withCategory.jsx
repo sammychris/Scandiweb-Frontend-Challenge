@@ -13,15 +13,25 @@ function withCategory(Component) {
 
     const addToCart = (e, product) => {
       e.preventDefault();
-      const productIndex = cart.findIndex((el) => el.id === product.id);
-      if (productIndex === -1) {
-        dispatch(setCart([...cart, { ...product, quantity: 1 }]));
-        window.alert('You\'ve successfully added a new product to Cart!');
-      } else {
-        const newCart = JSON.parse(JSON.stringify(cart));
-        newCart[productIndex].quantity++;
-        dispatch(setCart(newCart));
-        window.alert('You\'ve successfully added another quantity of this product in Cart!');
+
+      if (window.confirm('Do you wish to add this product without choosing attribute!')){
+
+        const productIndex = cart.findIndex((el) => el.id === product.id);
+
+        if (productIndex === -1) {
+
+          dispatch(setCart([...cart, { ...product, quantity: 1 }]));
+          window.alert('You\'ve successfully added a new product to Cart!');
+
+        } else {
+
+          const newCart = JSON.parse(JSON.stringify(cart));
+          newCart[productIndex].quantity++;
+          dispatch(setCart(newCart));
+          window.alert('You\'ve successfully added another quantity of this product in Cart!');
+
+        }
+
       }
     };
 

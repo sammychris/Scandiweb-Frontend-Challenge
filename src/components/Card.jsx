@@ -5,7 +5,7 @@ import addToCartIcon from '../assets/add-to-cart.svg';
 
 class Card extends React.Component {
   render() {
-    const { currency, product } = this.props;
+    const { currency, product, addToCart } = this.props;
     const {
       id, inStock, gallery, brand, name, prices,
     } = product;
@@ -13,9 +13,9 @@ class Card extends React.Component {
     return (
       <Container>
         <ProductUrl to={`/product/${id}`}>
-          <ProductImg src={gallery[0]}>
+          <ProductImg style={{backgroundImage: `url(${gallery[0]})`}}>
             {!inStock && <Span>OUT OF STOCK</Span>}
-            {inStock && <AddToCartIcon src={addToCartIcon} />}
+            {inStock && <AddToCartIcon onClick={(e) => addToCart(e, product)} src={addToCartIcon} />}
           </ProductImg>
           <Title>{`${brand} ${name}`}</Title>
           <PriceTag>{price.currency.symbol + price.amount.toFixed(2)}</PriceTag>
@@ -35,6 +35,8 @@ const AddToCartIcon = styled.img`
   position: absolute;
   bottom: -20px;
   right: 20px;
+  cursor: pointer;
+  z-index: 1;
 `;
 const Container = styled.div`
   padding: 14px;
@@ -70,7 +72,6 @@ const ProductImg = styled.div`
   display: block;
   width: 350px;
   height: 330px;
-  background-image: url(${(props) => props.src});
   background-size: contain;
   position: relative;
   background-repeat: no-repeat;

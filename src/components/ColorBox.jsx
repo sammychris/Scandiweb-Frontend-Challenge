@@ -6,7 +6,15 @@ class ColorBox extends React.Component {
     const {
       value, selected, style, onClick,
     } = this.props;
-    return (<Box value={value} selected={selected} style={style} onClick={onClick} />);
+    return (<Box
+      selected={selected}
+      style={{
+        ...style,
+        background: value,
+        border: selected? '2px solid #5ECE7B' : '1px solid #c3c3c3',
+      }}
+      onClick={onClick}
+    />);
   }
 }
 
@@ -16,7 +24,5 @@ const Box = styled.a`
   display: flex;
   width: 32px;
   height: 32px;
-  background: ${(props) => props.value};
   margin-right: 8px;
-  border: ${(props) => (props.selected ? '2px solid #5ECE7B' : '1px solid #c3c3c3')};
 `;

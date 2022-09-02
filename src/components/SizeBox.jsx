@@ -7,7 +7,16 @@ class SizeBox extends React.Component {
       value, selected, style, onClick,
     } = this.props;
     return (
-      <Button selected={selected} style={style} onClick={onClick}>{value}</Button>
+      <Button
+        style={{
+          ...style,
+          color: selected ? '#fff' : '#1D1F22',
+          background: selected ? '#1D1F22' : '#fff',
+        }}
+        onClick={onClick}
+      >
+        {value}
+      </Button>
     );
   }
 }
@@ -27,6 +36,4 @@ const Button = styled.a`
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
-  color: ${(props) => (props.selected ? '#fff' : '#1D1F22')};
-  background: ${(props) => (props.selected ? '#1D1F22' : '#fff')};
 `;

@@ -11,7 +11,7 @@ class CurrencySwitcher extends React.Component {
         {
           currencies?.map((curr, i) => (
             <Currency
-              selected={curr.label === currency.label}
+              style={{background: curr.label === currency.label && '#EEEEEE'}}
               href="#"
               onClick={(e) => onClick(e, curr)}
               key={i}
@@ -47,7 +47,6 @@ const Currency = styled.a`
   justify-content: center;
   text-decoration: none;
   color: #1D1F22;
-  background: ${(props) => (props.selected && '#EEEEEE')};
   &:hover {
     background: #eeeeee8c;
   }
