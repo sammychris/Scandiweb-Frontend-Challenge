@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/frontend-challenge/static/css/main.e1136392.css",
-    "main.js": "/frontend-challenge/static/js/main.60d9eff2.js",
-    "static/js/787.28cb0dcd.chunk.js": "/frontend-challenge/static/js/787.28cb0dcd.chunk.js",
+    "main.js": "/frontend-challenge/static/js/main.9e32eb2e.js",
+    "static/js/787.cfeb4579.chunk.js": "/frontend-challenge/static/js/787.cfeb4579.chunk.js",
     "static/media/logo.svg": "/frontend-challenge/static/media/logo.474fc4abb5e92641f457a94aca22ed2d.svg",
     "static/media/add-to-cart.svg": "/frontend-challenge/static/media/add-to-cart.a4e9444e7ebf058b18ccf2d48594c17d.svg",
     "static/media/cart-icon.svg": "/frontend-challenge/static/media/cart-icon.338a480f14d7d6fbb01edb7d9936432d.svg",
@@ -13,11 +13,11 @@
     "static/media/minus-square.svg": "/frontend-challenge/static/media/minus-square.239fc0541ff5351eb9675c3b0d5045d1.svg",
     "static/media/close-icon.svg": "/frontend-challenge/static/media/close-icon.90b7f0836b7a96a43d28bb4629d28801.svg",
     "main.e1136392.css.map": "/frontend-challenge/static/css/main.e1136392.css.map",
-    "main.60d9eff2.js.map": "/frontend-challenge/static/js/main.60d9eff2.js.map",
-    "787.28cb0dcd.chunk.js.map": "/frontend-challenge/static/js/787.28cb0dcd.chunk.js.map"
+    "main.9e32eb2e.js.map": "/frontend-challenge/static/js/main.9e32eb2e.js.map",
+    "787.cfeb4579.chunk.js.map": "/frontend-challenge/static/js/787.cfeb4579.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e1136392.css",
-    "static/js/main.60d9eff2.js"
+    "static/js/main.9e32eb2e.js"
   ]
 }
