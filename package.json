@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://sammychris.github.io/frontend-challenge/",
-  "resolutions": {
-    "styled-components": "^5"
-  },
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@reduxjs/toolkit": "^1.8.3",

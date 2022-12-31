@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import closeIcon from '../assets/close-icon.svg';
 import cartIcon from '../assets/cart-icon.svg';
 import CartOverlay from './CartOverlay';
@@ -32,7 +32,8 @@ class Header extends React.Component {
           <HeaderSection>
             <Navigation>
               {
-                data?.categories?.map((el, i) => <NavLink to={`/category/${el.name}`} key={i}>{el.name}</NavLink>)
+                // <Link exact to={'samuel' | "/"} activeClassName="active">All</Link>
+                data?.categories?.map((el, i) => <Link to={`/category/${el.name}`} key={i}  activeClassName='active'>{el.name}</Link>)
               }
             </Navigation>
             <Logo />
@@ -104,11 +105,14 @@ const Navigation = styled.div`
   justify-content: space-around;
 `;
 
-const NavLink = styled(Link)`
+const Link = styled(NavLink)`
   font-size: 16px;
   color: #1D1F22;
   text-decoration: none;
   text-transform: uppercase;
+  &.active {
+    font-weight: bold;
+  }
 `;
 
 const Actions = styled.div`
