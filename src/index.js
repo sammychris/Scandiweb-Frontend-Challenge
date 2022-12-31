@@ -12,7 +12,7 @@ import reportWebVitals from './reportWebVitals';
 import store from './store';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/',
+  uri: 'https://scandiweb-api.glitch.me/',
   cache: new InMemoryCache(),
 });
 

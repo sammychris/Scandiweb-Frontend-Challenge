@@ -1,8 +1,8 @@
 {
-  "name": "my-app",
+  "name": "frontend-challenge",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://sammychris.github.io/frontend-challenge/",
   "resolutions": {
     "styled-components": "^5"
   },
